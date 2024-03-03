@@ -3,12 +3,12 @@ use bevy::{
 };
 
 mod systems;
-use crate::systems::setup_system;
+use crate::systems::setup;
 
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
-        .add_systems(Startup, setup_system::setup)
+        .add_systems(Startup, setup::spawn_ui_system)
         /*.add_systems(
             FixedUpdate,
             ()
