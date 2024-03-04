@@ -3,8 +3,7 @@ use bevy::{
     ecs::system::Commands
 };
 
-#[derive(Component)]
-struct ScoreboardUi;
+use crate::components::*;
 
 const SCORE_COLOR: Color = Color::rgb(1.0, 0.5, 0.5);
 const SCOREBOARD_FONT_SIZE: f32 = 40.0;
@@ -19,7 +18,7 @@ pub fn spawn_ui_system(
 
     // Scoreboard
     commands.spawn((
-        ScoreboardUi,
+        gui_components::ScoreboardUi,
         TextBundle::from_sections([
             TextSection::new(
                 "Score: ",
