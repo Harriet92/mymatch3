@@ -1,4 +1,7 @@
-Just trying to learn Rust, make a game with it and all of it during the maternity leave :)
+Just trying to learn Rust, make a game with it and all of it during my maternity leave :)
+
+Language: Rust
+Game engine: Bevy
 
 Assets downloaded from the Unity Asset Store:
 https://assetstore.unity.com/packages/2d/environments/animated-match-3-gems-hue-shift-sprites-shaders-62804
