@@ -2,42 +2,28 @@ use bevy::{
     prelude::*,
     ecs::system::Commands
 };
+use crate::components::gui_components::*;
 
-use crate::components::*;
-
-const SCORE_COLOR: Color = Color::rgb(1.0, 0.5, 0.5);
-const SCOREBOARD_FONT_SIZE: f32 = 40.0;
-const SCOREBOARD_TEXT_PADDING: Val = Val::Px(5.0);
-const TEXT_COLOR: Color = Color::rgb(0.5, 0.5, 1.0);
-
-pub fn spawn_ui_system(
-    mut commands: Commands
+pub fn load_assets(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    mut texture_atlas_layouts: ResMut<Assets<TextureAtlasLayout>>,
 ) {
-    // Camera
-    commands.spawn(Camera2dBundle::default());
-
-    // Scoreboard
+    let texture = asset_server.load("textures/Gameplay/Gems/Gem_sprite_sheet.png");
+    let layout = TextureAtlasLayout::from_grid(Vec2::new(512.0, 512.0), 4, 4, None, None);
+    let texture_atlas_layout = texture_atlas_layouts.add(layout);
+    let animation_indices = AnimationIndices { first: 0, last: 15 };
     commands.spawn((
-        gui_components::ScoreboardUi,
-        TextBundle::from_sections([
-            TextSection::new(
-                "Score: ",
-                TextStyle {
-                    font_size: SCOREBOARD_FONT_SIZE,
-                    color: TEXT_COLOR,
-                    ..default()
-                },
-            ),
-            TextSection::from_style(TextStyle {
-                font_size: SCOREBOARD_FONT_SIZE,
-                color: SCORE_COLOR,
-                ..default()
-            }),
-        ]).with_style(Style {
-            position_type: PositionType::Absolute,
-            top: SCOREBOARD_TEXT_PADDING,
-            left: SCOREBOARD_TEXT_PADDING,
+        SpriteSheetBundle {
+            texture,
+            atlas: TextureAtlas {
+                layout: texture_atlas_layout,
+                index: animation_indices.first,
+            },
+            transform: Transform::from_scale(Vec3::splat(0.3)),
             ..default()
-        }),
+        },
+        animation_indices,
+        AnimationTimer(Timer::from_seconds(0.1, TimerMode::Repeating)),
     ));
 }
