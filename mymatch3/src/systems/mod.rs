@@ -1,4 +1,4 @@
-pub mod setup;
-pub mod gameplay;
+pub mod setup_systems;
+pub mod gameplay_systems;
 pub mod gui_systems;
 

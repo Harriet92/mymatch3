@@ -15,14 +15,14 @@ fn main() {
         .add_plugins(DefaultPlugins)
         .insert_resource(Scoreboard { score: 0 })
         .insert_resource(GameplayConfig::default())
-        .add_systems(Startup, (gui_systems::spawn_ui_system, setup::load_assets))
+        .add_systems(Startup, (gui_systems::spawn_ui_system, setup_systems::load_assets))
         /*.add_systems(
             FixedUpdate,
             ()
                 // `chain`ing systems together runs them in order
                 .chain(),
         )*/
-        .add_systems(Update, (gameplay::test_gameplay, gui_systems::animate_sprite))
+        .add_systems(Update, (gameplay_systems::test_gameplay, gui_systems::animate_sprite))
         .add_systems(Update, gui_systems::update_scoreboard)
         .run();
 }
