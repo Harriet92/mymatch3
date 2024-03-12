@@ -7,3 +7,4 @@ authors = ["Emi"]
 
 [dependencies]
 bevy = "0.13.0"
+rand = "0.9.0-alpha.0"
