@@ -2,7 +2,7 @@ use bevy::{
     prelude::*,
     ecs::system::Commands
 };
-use crate::components::gui_components::*;
+use crate::components::view_components::*;
 
 pub fn load_assets(
     mut commands: Commands,

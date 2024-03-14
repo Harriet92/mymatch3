@@ -23,7 +23,8 @@ fn main() {
                 // `chain`ing systems together runs them in order
                 .chain(),
         )*/
-        .add_systems(Update, (gui_systems::animate_sprite))
+        .add_systems(Update, gameplay_view_systems::spawn_tile_images)
+        .add_systems(Update, (view_systems::animate_sprite))
         .add_systems(Update, gui_systems::update_scoreboard)
         .run();
 }

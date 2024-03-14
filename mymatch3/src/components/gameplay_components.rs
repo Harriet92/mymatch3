@@ -9,6 +9,9 @@ pub(crate) struct Tile {
 
 impl Tile {
     pub fn new(x: usize, y: usize, tile_type: usize) -> Tile {
-        Tile { x, y, tile_type }
+        Tile { x, y, tile_type}
     }
 }
+
+#[derive(Component)]
+pub struct NeedsView;

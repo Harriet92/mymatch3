@@ -45,23 +45,6 @@ pub fn spawn_ui_system(
     ));
 }
 
-
-pub fn animate_sprite(
-    time: Res<Time>,
-    mut query: Query<(&AnimationIndices, &mut AnimationTimer, &mut TextureAtlas)>,
-) {
-    for (indices, mut timer, mut atlas) in &mut query {
-        timer.tick(time.delta());
-        if timer.just_finished() {
-            atlas.index = if atlas.index == indices.last {
-                indices.first
-            } else {
-                atlas.index + 1
-            };
-        }
-    }
-}
-
 pub fn update_scoreboard(scoreboard: Res<score_components::Scoreboard>, mut query: Query<&mut Text, With<ScoreboardUi>>) {
     let mut text = query.single_mut();
     text.sections[1].value = scoreboard.score.to_string();
