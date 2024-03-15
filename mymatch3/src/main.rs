@@ -14,8 +14,9 @@ fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
         .insert_resource(Scoreboard { score: 0 })
+        .init_resource::<input_systems::MyWorldCoords>()
         .insert_resource(GameplayConfig::default())
-        .add_systems(Startup, (gui_systems::spawn_ui_system))
+        .add_systems(Startup, (gui_systems::spawn_ui_system, input_systems::setup))
         .add_systems(PostStartup, gameplay_systems::spawn_board)
         /*.add_systems(
             FixedUpdate,
@@ -23,6 +24,7 @@ fn main() {
                 // `chain`ing systems together runs them in order
                 .chain(),
         )*/
+        .add_systems(Update, input_systems::my_cursor_system)
         .add_systems(Update, gameplay_view_systems::spawn_tile_images)
         .add_systems(Update, (view_systems::animate_sprite))
         .add_systems(Update, gui_systems::update_scoreboard)
