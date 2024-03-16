@@ -16,9 +16,6 @@ const TEXT_COLOR: Color = Color::rgb(0.5, 0.5, 1.0);
 pub fn spawn_ui_system(
     mut commands: Commands
 ) {
-    // Camera
-    commands.spawn(Camera2dBundle::default());
-
     // Scoreboard
     commands.spawn((
         gui_components::ScoreboardUi,

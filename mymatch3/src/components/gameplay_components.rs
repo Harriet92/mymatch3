@@ -1,4 +1,4 @@
-use bevy::prelude::Component;
+use bevy::prelude::{Component, Event};
 
 #[derive(Component)]
 pub(crate) struct Tile {
@@ -15,3 +15,6 @@ impl Tile {
 
 #[derive(Component)]
 pub struct NeedsView;
+
+#[derive(Event)]
+pub struct LeftMouseButtonPressed;

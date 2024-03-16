@@ -3,8 +3,9 @@ use bevy::{
 };
 use rand::{Rng, thread_rng};
 
-use crate::components::score_components;
+use crate::components::{input_components, score_components};
 use crate::components::gameplay_components;
+use crate::components::gameplay_components::{LeftMouseButtonPressed, Tile};
 use crate::config::GameplayConfig;
 
 
@@ -27,4 +28,16 @@ fn spawn_tile(mut commands: &mut Commands, x: usize, y: usize, tile_type: usize)
                        gameplay_components::Tile::new( x, y, tile_type),
                         gameplay_components::NeedsView
                    ));
+}
+
+pub fn mark_clicked_tile(cursor_position: Res<input_components::CurrentWorldCoords>,
+    mut ev_clicked: EventReader<LeftMouseButtonPressed>,
+                         query: Query<(Entity, &Tile)>
+) {
+    for ev in ev_clicked.read() {
+        for (entity, xp) in query.iter() {
+            //TODO: Check which tile is clicked
+            eprintln!("Clicked at {}x{}", cursor_position.0[0], cursor_position.0[1])
+        }
+    }
 }
