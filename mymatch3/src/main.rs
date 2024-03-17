@@ -1,6 +1,7 @@
 use bevy::{
     prelude::*
 };
+use bevy_rapier2d::prelude::*;
 use components::input_components::CurrentWorldCoords;
 use crate::components::gameplay_components::LeftMouseButtonPressed;
 
@@ -15,6 +16,7 @@ use crate::config::GameplayConfig;
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
+        .add_plugins(RapierPhysicsPlugin::<NoUserData>::pixels_per_meter(100.0))
         .insert_resource(Scoreboard { score: 0 })
         .init_resource::<CurrentWorldCoords>()
         .insert_resource(GameplayConfig::default())
