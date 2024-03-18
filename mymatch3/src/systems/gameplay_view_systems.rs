@@ -4,6 +4,7 @@ use bevy::{
 
 use crate::components::gameplay_components;
 use crate::components::view_components::{AnimationIndices, AnimationTimer};
+use crate::config::GameplayViewConfig;
 
 static SPRITES: [&str; 8] = [
     "textures/Gameplay/Gems/Gem_sprite_sheet.png",
@@ -21,15 +22,18 @@ static SPRITES: [&str; 8] = [
 pub fn spawn_tile_images(mut query: Query<(Entity, &gameplay_components::Tile, &gameplay_components::NeedsView)>,
                      mut commands: Commands,
                      asset_server: Res<AssetServer>,
+                     gameplay_view_config: Res<GameplayViewConfig>,
                      mut texture_atlas_layouts: ResMut<Assets<TextureAtlasLayout>>) {
     for (e, mut tile, _needs_view) in &mut query {
         commands.entity(e).remove::<gameplay_components::NeedsView>();
 
         let texture = asset_server.load(SPRITES[tile.tile_type]);
-        let layout = TextureAtlasLayout::from_grid(Vec2::new(512.0, 512.0), 4, 4, None, None);
+        let layout = TextureAtlasLayout::from_grid(Vec2::splat(gameplay_view_config.sprite_size), 4, 4, None, None);
         let texture_atlas_layout = texture_atlas_layouts.add(layout);
         let animation_indices = AnimationIndices { first: 0, last: 15 };
-        const TILE_SIZE: f32 = 80.;
+
+        let x_pos = tile.x as f32 * gameplay_view_config.tile_size - gameplay_view_config.translation;
+        let y_pos = tile.y as f32 * gameplay_view_config.tile_size - gameplay_view_config.translation;
 
         commands.spawn((
             gameplay_components::Tile::new(tile.x, tile.y, tile.tile_type),
@@ -39,7 +43,7 @@ pub fn spawn_tile_images(mut query: Query<(Entity, &gameplay_components::Tile, &
                     layout: texture_atlas_layout,
                     index: animation_indices.first,
                 },
-                transform: Transform::from_xyz(tile.x as f32 * TILE_SIZE - 400., tile.y as f32 * TILE_SIZE - 300., 1.).with_scale(Vec3::new(0.15, 0.15, 0.3)),
+                transform: Transform::from_xyz(x_pos, y_pos, 1.).with_scale(Vec3::splat(gameplay_view_config.sprite_scale)),
                 ..default()
             },
             animation_indices,

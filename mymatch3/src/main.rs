@@ -11,15 +11,17 @@ mod config;
 
 use crate::systems::*;
 use crate::components::score_components::Scoreboard;
-use crate::config::GameplayConfig;
+use crate::config::{GameplayConfig, GameplayViewConfig};
 
 fn main() {
+
     App::new()
         .add_plugins(DefaultPlugins)
         .add_plugins(RapierPhysicsPlugin::<NoUserData>::pixels_per_meter(100.0))
         .insert_resource(Scoreboard { score: 0 })
         .init_resource::<CurrentWorldCoords>()
         .insert_resource(GameplayConfig::default())
+        .insert_resource(GameplayViewConfig::default(GameplayConfig::default().board_size))
         .add_event::<LeftMouseButtonPressed>()
         .add_systems(Startup, (gui_systems::spawn_ui_system, setup_systems::spawn_camera))
         .add_systems(PostStartup, gameplay_systems::spawn_board)
