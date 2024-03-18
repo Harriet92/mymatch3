@@ -37,7 +37,7 @@ pub fn mark_clicked_tile(cursor_position: Res<input_components::CurrentWorldCoor
     for ev in ev_clicked.read() {
         for (entity, xp) in query.iter() {
             //TODO: Check which tile is clicked
-            eprintln!("Clicked at {}x{}", cursor_position.0[0], cursor_position.0[1])
+            eprintln!("Clicked at {}x{}", cursor_position.value[0], cursor_position.value[1])
         }
     }
 }

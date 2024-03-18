@@ -16,7 +16,7 @@ pub fn read_current_cursor_position_system(
         .and_then(|cursor| camera.viewport_to_world(camera_transform, cursor))
         .map(|ray| ray.origin.truncate())
     {
-        coords.0 = world_position;
+        coords.value = world_position;
     }
 }
 
