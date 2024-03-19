@@ -23,10 +23,9 @@ pub fn read_current_cursor_position_system(
 pub fn mouse_input_handling_system(buttons: Res<ButtonInput<MouseButton>>,
                                    mut ev_levelup: EventWriter<LeftMouseButtonPressed>) {
     if buttons.just_pressed(MouseButton::Left) {
-    ev_levelup.send(LeftMouseButtonPressed);
     }
     if buttons.just_released(MouseButton::Left) {
-    // Left Button was released
+        ev_levelup.send(LeftMouseButtonPressed);
     }
     if buttons.pressed(MouseButton::Right) {
     // Right Button is being held down

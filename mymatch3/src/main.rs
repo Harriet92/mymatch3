@@ -8,6 +8,7 @@ use crate::components::gameplay_components::LeftMouseButtonPressed;
 mod systems;
 mod components;
 mod config;
+mod utils;
 
 use crate::systems::*;
 use crate::components::score_components::Scoreboard;
@@ -32,7 +33,7 @@ fn main() {
                 .chain(),
         )*/
         .add_systems(Update, (input_systems::read_current_cursor_position_system, input_systems::mouse_input_handling_system))
-        .add_systems(Update, (gameplay_view_systems::spawn_tile_images, gameplay_systems::mark_clicked_tile))
+        .add_systems(Update, (gameplay_view_systems::spawn_tile_images, gameplay_view_systems::mark_clicked_tile))
         .add_systems(Update, (view_systems::animate_sprite))
         .add_systems(Update, gui_systems::update_scoreboard)
         .run();
