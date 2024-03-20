@@ -35,7 +35,8 @@ pub fn spawn_tile_images(mut query: Query<(Entity, &gameplay_components::Tile, &
 
         let x_pos = tile.x as f32 * gameplay_view_config.tile_size - gameplay_view_config.translation;
         let y_pos = tile.y as f32 * gameplay_view_config.tile_size - gameplay_view_config.translation;
-
+        let mut timer = AnimationTimer(Timer::from_seconds(0.1, TimerMode::Repeating));
+        timer.pause();
         commands.spawn((
             gameplay_components::Tile::new(tile.x, tile.y, tile.tile_type),
             SpriteSheetBundle {
@@ -48,7 +49,7 @@ pub fn spawn_tile_images(mut query: Query<(Entity, &gameplay_components::Tile, &
                 ..default()
             },
             animation_indices,
-            AnimationTimer(Timer::from_seconds(0.1, TimerMode::Repeating))
+            timer
         ));
     }
 }
