@@ -16,5 +16,5 @@ impl Tile {
 #[derive(Component)]
 pub struct NeedsView;
 
-#[derive(Event)]
-pub struct LeftMouseButtonPressed;
+#[derive(Component)]
+pub struct Selected;

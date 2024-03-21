@@ -2,8 +2,8 @@ use bevy::{
     prelude::*
 };
 
-use crate::components::{gameplay_components, input_components};
-use crate::components::gameplay_components::{LeftMouseButtonPressed, Tile};
+use crate::components::input_components::*;
+use crate::components::gameplay_components::*;
 use crate::components::view_components::{AnimationIndices, AnimationTimer};
 use crate::config::GameplayViewConfig;
 
@@ -20,7 +20,7 @@ static SPRITES: [&str; 8] = [
 //pub fn load_sprite_atlasses()
 //TODO: Loading sprites at start
 
-pub fn spawn_tile_images(mut query: Query<(Entity, &gameplay_components::Tile, &gameplay_components::NeedsView)>,
+pub fn spawn_tile_images(mut query: Query<(Entity, &Tile, &NeedsView)>,
                          mut commands: Commands,
                          asset_server: Res<AssetServer>,
                          gameplay_view_config: Res<GameplayViewConfig>,
@@ -38,7 +38,7 @@ pub fn spawn_tile_images(mut query: Query<(Entity, &gameplay_components::Tile, &
         let mut timer = AnimationTimer(Timer::from_seconds(0.1, TimerMode::Repeating));
         timer.pause();
         commands.spawn((
-            gameplay_components::Tile::new(tile.x, tile.y, tile.tile_type),
+            Tile::new(tile.x, tile.y, tile.tile_type),
             SpriteSheetBundle {
                 texture,
                 atlas: TextureAtlas {
@@ -54,8 +54,11 @@ pub fn spawn_tile_images(mut query: Query<(Entity, &gameplay_components::Tile, &
     }
 }
 
+// Move this to the gameplay systems mod
+// Add logic for selecting the second tile if adjacent and deselecting the first tile if not adjacent was clicked
+//Here we should only have logic for the visual representation of the state change (currently - pausing an animation)
 
-pub fn mark_clicked_tile(cursor_position: Res<input_components::CurrentWorldCoords>,
+pub fn mark_clicked_tile(cursor_position: Res<CurrentWorldCoords>,
                          gameplay_view_config: Res<GameplayViewConfig>,
                          mut ev_clicked: EventReader<LeftMouseButtonPressed>,
                          mut query: Query<(Entity, &Tile, &mut AnimationTimer, &mut TextureAtlas, &AnimationIndices)>,
@@ -66,6 +69,8 @@ pub fn mark_clicked_tile(cursor_position: Res<input_components::CurrentWorldCoor
 
         for (entity, tile, mut timer, mut texture_atlas, indices) in query.iter_mut() {
             if tile.x == x && tile.y == y {
+                // if selected - do nothing
+                // else - add selected component
                 if timer.0.paused() {
                     timer.0.unpause();
                 } else {

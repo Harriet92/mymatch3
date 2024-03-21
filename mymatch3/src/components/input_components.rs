@@ -1,5 +1,5 @@
 use bevy::math::Vec2;
-use bevy::prelude::{Component, Resource};
+use bevy::prelude::{Component, Event, Resource};
 
 #[derive(Resource, Default)]
 pub struct CurrentWorldCoords {
@@ -11,3 +11,6 @@ impl CurrentWorldCoords{
         CurrentWorldCoords { value: Vec2::new(x, y) }
     }
 }
+
+#[derive(Event)]
+pub struct LeftMouseButtonPressed;
