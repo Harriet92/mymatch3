@@ -4,7 +4,7 @@ use bevy::{
 
 use crate::components::input_components::*;
 use crate::components::gameplay_components::*;
-use crate::components::view_components::{AnimationIndices, AnimationTimer};
+use crate::components::view_components::{AnimationIndices, AnimationTimer, TileClickedEvent};
 use crate::config::GameplayViewConfig;
 
 static SPRITES: [&str; 8] = [
@@ -54,14 +54,11 @@ pub fn spawn_tile_images(mut query: Query<(Entity, &Tile, &NeedsView)>,
     }
 }
 
-// Move this to the gameplay systems mod
-// Add logic for selecting the second tile if adjacent and deselecting the first tile if not adjacent was clicked
-//Here we should only have logic for the visual representation of the state change (currently - pausing an animation)
-
-pub fn mark_clicked_tile(cursor_position: Res<CurrentWorldCoords>,
-                         gameplay_view_config: Res<GameplayViewConfig>,
-                         mut ev_clicked: EventReader<LeftMouseButtonPressed>,
-                         mut query: Query<(Entity, &Tile, &mut AnimationTimer, &mut TextureAtlas, &AnimationIndices)>,
+pub fn check_if_tile_clicked(cursor_position: Res<CurrentWorldCoords>,
+                             gameplay_view_config: Res<GameplayViewConfig>,
+                             mut ev_clicked: EventReader<LeftMouseButtonPressed>,
+                             mut ev_tile_clicked: EventWriter<TileClickedEvent>,
+                             mut query: Query<(Entity, &Tile, &mut AnimationTimer, &mut TextureAtlas, &AnimationIndices)>,
 ) {
     for ev in ev_clicked.read() {
         let x = ((cursor_position.value.x + gameplay_view_config.translation) / gameplay_view_config.tile_size).round() as usize;
@@ -69,14 +66,7 @@ pub fn mark_clicked_tile(cursor_position: Res<CurrentWorldCoords>,
 
         for (entity, tile, mut timer, mut texture_atlas, indices) in query.iter_mut() {
             if tile.x == x && tile.y == y {
-                // if selected - do nothing
-                // else - add selected component
-                if timer.0.paused() {
-                    timer.0.unpause();
-                } else {
-                    timer.0.pause();
-                    texture_atlas.index = indices.first;
-                }
+                ev_tile_clicked.send(TileClickedEvent{ tile_entity: entity });
             }
         }
     }

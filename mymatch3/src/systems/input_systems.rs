@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
-use crate::components::gameplay_components::LeftMouseButtonPressed;
+use crate::components::input_components::LeftMouseButtonPressed;
 use crate::components::input_components::*;
 use crate::components::view_components::MainCamera;
 
@@ -21,11 +21,11 @@ pub fn read_current_cursor_position_system(
 }
 
 pub fn mouse_input_handling_system(buttons: Res<ButtonInput<MouseButton>>,
-                                   mut ev_levelup: EventWriter<LeftMouseButtonPressed>) {
+                                   mut ev_left_click: EventWriter<LeftMouseButtonPressed>) {
     if buttons.just_pressed(MouseButton::Left) {
     }
     if buttons.just_released(MouseButton::Left) {
-        ev_levelup.send(LeftMouseButtonPressed);
+        ev_left_click.send(LeftMouseButtonPressed);
     }
     if buttons.pressed(MouseButton::Right) {
     // Right Button is being held down

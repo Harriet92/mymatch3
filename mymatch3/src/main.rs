@@ -3,7 +3,8 @@ use bevy::{
 };
 use bevy_rapier2d::prelude::*;
 use components::input_components::CurrentWorldCoords;
-use crate::components::gameplay_components::LeftMouseButtonPressed;
+use components::view_components::*;
+use crate::components::input_components::LeftMouseButtonPressed;
 
 mod systems;
 mod components;
@@ -24,6 +25,7 @@ fn main() {
         .insert_resource(GameplayConfig::default())
         .insert_resource(GameplayViewConfig::default(GameplayConfig::default().board_size))
         .add_event::<LeftMouseButtonPressed>()
+        .add_event::<components::view_components::TileClickedEvent>()
         .add_systems(Startup, (gui_systems::spawn_ui_system, setup_systems::spawn_camera))
         .add_systems(PostStartup, gameplay_systems::spawn_board)
         /*.add_systems(
@@ -33,7 +35,8 @@ fn main() {
                 .chain(),
         )*/
         .add_systems(Update, (input_systems::read_current_cursor_position_system, input_systems::mouse_input_handling_system))
-        .add_systems(Update, (gameplay_view_systems::spawn_tile_images, gameplay_view_systems::mark_clicked_tile))
+        .add_systems(Update, (gameplay_view_systems::spawn_tile_images, gameplay_view_systems::check_if_tile_clicked))
+        .add_systems(Update, (gameplay_systems::mark_selected_tile))
         .add_systems(Update, (view_systems::animate_sprite))
         .add_systems(Update, gui_systems::update_scoreboard)
         .run();
