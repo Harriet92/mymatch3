@@ -14,5 +14,6 @@ pub struct MainCamera;
 
 #[derive(Event)]
 pub struct TileClickedEvent {
-    pub tile_entity: Entity
+    pub x: usize,
+    pub y: usize
 }

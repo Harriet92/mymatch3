@@ -66,7 +66,7 @@ pub fn check_if_tile_clicked(cursor_position: Res<CurrentWorldCoords>,
 
         for (entity, tile, mut timer, mut texture_atlas, indices) in query.iter_mut() {
             if tile.x == x && tile.y == y {
-                ev_tile_clicked.send(TileClickedEvent{ tile_entity: entity });
+                ev_tile_clicked.send(TileClickedEvent{ x, y });
             }
         }
     }
