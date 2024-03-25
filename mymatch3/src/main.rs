@@ -37,6 +37,7 @@ fn main() {
         .add_systems(Update, (input_systems::read_current_cursor_position_system, input_systems::mouse_input_handling_system))
         .add_systems(Update, (gameplay_view_systems::spawn_tile_images, gameplay_view_systems::check_if_tile_clicked))
         .add_systems(Update, (gameplay_systems::mark_selected_tile))
+        .add_systems(Update, (gameplay_view_systems::on_selected_tile, gameplay_view_systems::on_deselected_tile))
         .add_systems(Update, (view_systems::animate_sprite))
         .add_systems(Update, gui_systems::update_scoreboard)
         .run();

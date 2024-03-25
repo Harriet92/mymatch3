@@ -58,16 +58,34 @@ pub fn check_if_tile_clicked(cursor_position: Res<CurrentWorldCoords>,
                              gameplay_view_config: Res<GameplayViewConfig>,
                              mut ev_clicked: EventReader<LeftMouseButtonPressed>,
                              mut ev_tile_clicked: EventWriter<TileClickedEvent>,
-                             mut query: Query<(Entity, &Tile, &mut AnimationTimer, &mut TextureAtlas, &AnimationIndices)>,
+                             mut query: Query<(&Tile)>,
 ) {
     for ev in ev_clicked.read() {
         let x = ((cursor_position.value.x + gameplay_view_config.translation) / gameplay_view_config.tile_size).round() as usize;
         let y = ((cursor_position.value.y + gameplay_view_config.translation) / gameplay_view_config.tile_size).round() as usize;
 
-        for (entity, tile, mut timer, mut texture_atlas, indices) in query.iter_mut() {
+        for (tile) in query.iter_mut() {
             if tile.x == x && tile.y == y {
-                ev_tile_clicked.send(TileClickedEvent{ x, y });
+                ev_tile_clicked.send(TileClickedEvent { x, y });
             }
+        }
+    }
+}
+
+pub fn on_selected_tile(mut query: Query<(&mut AnimationTimer), Added<Selected>>,
+) {
+    for (mut timer) in query.iter_mut() {
+        timer.0.unpause();
+    }
+}
+
+pub fn on_deselected_tile(mut removed: RemovedComponents<Selected>,
+                          mut query: Query<(&mut AnimationTimer, &mut TextureAtlas, &AnimationIndices)>,
+) {
+    for entity in removed.read() {
+        if let Ok((mut timer, mut texture_atlas, indices)) = query.get_mut(entity) {
+            timer.0.pause();
+            texture_atlas.index = indices.first;
         }
     }
 }
