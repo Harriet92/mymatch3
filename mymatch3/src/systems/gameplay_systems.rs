@@ -51,17 +51,21 @@ pub fn mark_selected_tile(mut ev_tile_clicked: EventReader<TileClickedEvent>,
         }
         let selected_count = q_selected_tiles.iter().count();
         set_tile_as_selected(&mut commands, clicked_tile_entity.unwrap());
-        if selected_count == 0 {
-            return;
-        } else if selected_count == 2 {
-            for (tile_entity, _) in q_selected_tiles.iter() {
-                commands.entity(tile_entity).remove::<Selected>();
-            }
-        } else {
-            let (entity, selected_tile) = q_selected_tiles.single();
-            if are_adjacent(selected_tile, clicked_tile_component.unwrap()) == false{
-                commands.entity(entity).remove::<Selected>();
-            }
+
+        match selected_count {
+            0 => return,
+            1 => {
+                let (entity, selected_tile) = q_selected_tiles.single();
+                if are_adjacent(selected_tile, clicked_tile_component.unwrap()) == false{
+                    commands.entity(entity).remove::<Selected>();
+                }
+            },
+            2 => {
+                for (tile_entity, _) in q_selected_tiles.iter() {
+                    commands.entity(tile_entity).remove::<Selected>();
+                }
+            },
+            _ => panic!("Selected tiles number exceeds 2, something went wrong!")
         }
     }
 }
