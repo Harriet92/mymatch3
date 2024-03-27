@@ -79,3 +79,15 @@ fn are_adjacent(t1: &Tile, t2: &Tile) -> bool {
     let dy: i32 = (t1.y as i32 - t2.y as i32).abs();
     return dx + dy == 1;
 }
+
+pub fn switch_tile_places(mut commands: Commands,
+                          q_selected_tiles: Query<(Entity, &mut Tile), With<Selected>> ) {
+
+    let selected_count = q_selected_tiles.iter().count();
+    if selected_count != 2 {
+        return;
+    }
+    // switch tiles' indexes
+    // create a view system which will lerp the position of the sprites
+
+}
