@@ -3,7 +3,6 @@ use bevy::{
 };
 use bevy_rapier2d::prelude::*;
 use components::input_components::CurrentWorldCoords;
-use components::view_components::*;
 use crate::components::input_components::LeftMouseButtonPressed;
 
 mod systems;
